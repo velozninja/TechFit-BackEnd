@@ -1,7 +1,7 @@
 package com.TechFit.TechFit.exeptions;
 
-public class UserNotFound extends RuntimeException {
-    public UserNotFound(String message) {
+public class NotFound extends RuntimeException {
+    public NotFound(String message) {
         super(message);
     }
 }
