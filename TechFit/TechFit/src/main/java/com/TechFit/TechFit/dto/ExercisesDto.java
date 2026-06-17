@@ -7,12 +7,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ExcerciesDto {
-    public int aluno_id;
-    public int personal_id;
+public class ExercisesDto {
+
     public String name;
-    public Integer metters;
-    public String description;
+    public Integer meters;
     public int reps;
 
 
