@@ -20,8 +20,8 @@ public class ExercisesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private Integer Metters;
-    private String description;
+    private Integer Meters;
+
     private Integer reps;
 
     @ManyToMany
