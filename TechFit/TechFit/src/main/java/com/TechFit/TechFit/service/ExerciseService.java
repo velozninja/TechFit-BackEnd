@@ -4,9 +4,12 @@ import com.TechFit.TechFit.database.model.ExercisesEntity;
 import com.TechFit.TechFit.database.repository.IExercisesRepository;
 import com.TechFit.TechFit.dto.ExercisesDto;
 import com.TechFit.TechFit.exeptions.AlreadyExist;
+import com.TechFit.TechFit.exeptions.NotFound;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -23,4 +26,20 @@ public class ExerciseService {
         exercisesRepository.save(exercisesEntity);
         return exercisesDto;
     }
+
+
+    public ExercisesDto GetExercise(String name) throws NotFound {
+        Optional<ExercisesEntity> exercisesEntity = exercisesRepository.findByName(name);
+        if (exercisesEntity.isPresent()) {
+            ExercisesDto exercisesDto = new ExercisesDto();
+            exercisesDto.setName(exercisesEntity.get().getName());
+            exercisesDto.setMeters(exercisesEntity.get().getMeters());
+            exercisesDto.setReps(exercisesEntity.get().getReps());
+
+            return exercisesDto;
+
+        }
+        throw new NotFound("exercise not found");
+    }
+
 }
