@@ -21,6 +21,7 @@ import java.util.*;
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "user_id")
     private UUID id;
     @NotBlank
     private String username;
@@ -43,14 +44,14 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "personal")
     List<UserEntity> Students;
 
-    @OneToOne(mappedBy = "personal")
-    private UserEntity Personal;
+
+
 
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return Collections.singleton(roles);
     }
 
     @Override

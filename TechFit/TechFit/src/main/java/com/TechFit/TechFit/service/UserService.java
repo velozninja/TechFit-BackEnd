@@ -7,23 +7,16 @@ import com.TechFit.TechFit.database.repository.IRolesRepository;
 import com.TechFit.TechFit.database.repository.IUserRepository;
 import com.TechFit.TechFit.dto.TokenResponseDto;
 import com.TechFit.TechFit.dto.UserRequestDto;
-import com.TechFit.TechFit.exeptions.AlreadyExist;
-import com.TechFit.TechFit.exeptions.NotFound;
+import com.TechFit.TechFit.exeptions.Exceptions;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -42,14 +35,12 @@ public class UserService {
         Optional<UserEntity> userV = iUserRepository.findByEmail(userRQ.getEmail());
 
         if (userV.isPresent()) {
-            throw new AlreadyExist("User already exist");
+            throw new Exceptions.AlreadyExist("User already exist");
         }
         if(userRQ.isPersonal()) {
 
             RolesEntity role = iRolesRepository.findByName("ROLE_PERSONAL");
-        if(role.getName() != "ROLE_PERSONAL" && role.getName() != "ROLE_ALUNO" && role == null) {
-                throw new NotFound("Role is not found");
-            }
+
             
             userET.setEmail(userRQ.getEmail());
             userET.setPassword(passwordEncoder.encode(userRQ.getPassword()));
@@ -83,7 +74,22 @@ public class UserService {
 
     }
     public TokenResponseDto login(UserRequestDto userRQ) throws BadRequestException {
+
         try {
+            if(userRQ.isPersonal()) {
+              String role_name = "ROLE_PERSONAL";
+              RolesEntity role = iRolesRepository.findByName(role_name);
+              iUserRepository.findByRolesAndEmail( role, userRQ.getEmail())
+                      .orElseThrow(() -> new Exceptions.NotFound("User not found"));
+
+            }
+            else{
+                String role_name = "ROLE_ALUNO";
+                RolesEntity role = iRolesRepository.findByName(role_name);
+
+                iUserRepository.findByRolesAndEmail(role, userRQ.getEmail())
+                        .orElseThrow(() -> new Exceptions.NotFound("User not found"));
+            }
 
              Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userRQ.getEmail(), userRQ.getPassword()));
              String token = tokenProvider.gerarToken(authentication);
