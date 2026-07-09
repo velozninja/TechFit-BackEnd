@@ -4,6 +4,7 @@ spring:
       org:
         springframework:
           security=DEBUG:
+          sql:DEBUG:
   application:
     name: TechFit
 

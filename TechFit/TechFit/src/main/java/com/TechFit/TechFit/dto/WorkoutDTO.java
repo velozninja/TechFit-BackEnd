@@ -1,7 +1,9 @@
 package com.TechFit.TechFit.dto;
 
-import jakarta.persistence.*;
+import com.TechFit.TechFit.database.model.workout.ExerciseEntity;
 import lombok.*;
+
+import java.util.List;
 
 
 @Getter
@@ -12,13 +14,8 @@ import lombok.*;
 public class WorkoutDTO {
 
     private String name;
-    private String description;
-    private String category;
     private String WeekDays;
-
-
-
-
-
+    private String notes;
+    private List<ExerciseEntity> ExerciseEntities;
 
 }
