@@ -19,8 +19,7 @@ public class GlobalExeptionHandler {
 
     }
     @ExceptionHandler(Exceptions.BadRequest.class)
-    public ResponseEntity<String> handleBadRequest(Exceptions.BadRequest
-                                                               e) {
+    public ResponseEntity<String> handleBadRequest(Exceptions.BadRequest e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 
     }

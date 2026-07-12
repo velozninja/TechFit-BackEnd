@@ -7,10 +7,7 @@ import com.TechFit.TechFit.service.WorkoutService;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +20,17 @@ public class Workout {
     public ResponseEntity<workoutCreateDto> addWorkout(@RequestBody workoutCreateDto workout) throws BadRequestException {
         workoutService.createWorkout(workout);
         return ResponseEntity.ok().body(workout);
+    }
+    @PatchMapping("/{OriginName}")
+    public ResponseEntity<workoutCreateDto>  editWorkout(@RequestBody workoutCreateDto workout, @PathVariable String OriginName) throws BadRequestException {
+        workoutService.EditWorkout(workout, OriginName);
+        return ResponseEntity.ok().body(workout);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteWorkout(@RequestBody workoutCreateDto workout) throws BadRequestException {
+        workoutService.DeleteWorkout(workout);
+        return ResponseEntity.noContent().build();
     }
 
 }
