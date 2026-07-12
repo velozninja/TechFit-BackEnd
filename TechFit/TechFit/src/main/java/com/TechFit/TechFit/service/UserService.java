@@ -74,21 +74,32 @@ public class UserService {
 
     }
     public TokenResponseDto login(UserRequestDto userRQ) throws BadRequestException {
+        System.out.println(userRQ.getEmail());
+
 
         try {
             if(userRQ.isPersonal()) {
+                System.out.println(userRQ);
+
               String role_name = "ROLE_PERSONAL";
               RolesEntity role = iRolesRepository.findByName(role_name);
-              iUserRepository.findByRolesAndEmail( role, userRQ.getEmail())
+                System.out.println("teste");
+              iUserRepository.findByRolesAndEmail(role, userRQ.getEmail())
+
                       .orElseThrow(() -> new Exceptions.NotFound("User not found"));
+                       System.out.println("teste");
+                System.out.println(userRQ);
+
 
             }
             else{
                 String role_name = "ROLE_ALUNO";
                 RolesEntity role = iRolesRepository.findByName(role_name);
+                System.out.println("teste");
 
                 iUserRepository.findByRolesAndEmail(role, userRQ.getEmail())
                         .orElseThrow(() -> new Exceptions.NotFound("User not found"));
+                System.out.println(userRQ.getEmail());
             }
 
              Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userRQ.getEmail(), userRQ.getPassword()));

@@ -21,13 +21,14 @@ public class WorkoutEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "workout_id")
     private Integer id;
+
     private String name;
     @Column(name = "week_days")
     private String WeekDays;
     @ManyToOne
-    private UserEntity Aluno;
+    private UserEntity aluno;
     @ManyToOne
-    private UserEntity Personal;
+    private UserEntity personal;
 
     private String notes;
     @ElementCollection
