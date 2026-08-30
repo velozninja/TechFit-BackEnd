@@ -30,6 +30,8 @@ public class UserEntity implements UserDetails {
     @Email
     @NotBlank
     private String email;
+    @Column(unique = true)
+    private String sharableTag;
 
 
     @ManyToOne

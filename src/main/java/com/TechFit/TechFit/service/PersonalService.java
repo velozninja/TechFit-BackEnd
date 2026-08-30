@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class PersonalService {
     private final IUserRepository UserRepository;
-    public String AddAluno(String Email, UserRequestDto userPL) throws BadRequestException {
-        UserEntity userQuery = UserRepository.findByEmail(Email)
-                .orElseThrow(() -> new Exceptions.NotFound("User not found"));
+    public String AddAluno(String SharableTag, UserRequestDto userPL) throws BadRequestException {
+        UserEntity userQuery = UserRepository.findBysharableTag(SharableTag)
+                .orElseThrow(() -> new Exceptions.NotFound("Student not found"));
         UserEntity Personal = UserRepository.findByEmail(userPL.getEmail())
                         .orElseThrow(() -> new Exceptions.NotFound("User not found"));
         userQuery.setPersonal(Personal);
@@ -30,6 +30,7 @@ public class PersonalService {
 
 
 
-        return Email;
+        return SharableTag;
     }
+
 }
