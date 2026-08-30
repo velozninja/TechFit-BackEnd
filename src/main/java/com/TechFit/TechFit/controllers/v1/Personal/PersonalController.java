@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 public class PersonalController {
     private final PersonalService PersonalService;
     @PatchMapping("/aluno")
-    public ResponseEntity<?> addAluno(@RequestParam String Email, @RequestBody UserRequestDto userPL) throws BadRequestException {
-        PersonalService.AddAluno(Email,userPL);
+    public ResponseEntity<?> addAluno(@RequestParam String Sharable, @RequestBody UserRequestDto userPL) throws BadRequestException {
+        PersonalService.AddAluno(Sharable,userPL);
         return ResponseEntity.noContent().build();
     }
 
