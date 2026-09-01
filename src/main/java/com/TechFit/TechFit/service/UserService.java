@@ -7,6 +7,7 @@ import com.TechFit.TechFit.database.repository.IRolesRepository;
 import com.TechFit.TechFit.database.repository.IUserRepository;
 import com.TechFit.TechFit.dto.TokenResponseDto;
 import com.TechFit.TechFit.dto.UserRequestDto;
+import com.TechFit.TechFit.dto.UserResponseDto;
 import com.TechFit.TechFit.exeptions.Exceptions;
 import com.TechFit.TechFit.utils.GenerationRandomTag;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +34,10 @@ public class UserService {
     @Value(value = "${jwt.expiration}")
     private long TokenExpirationTime;
     private final GenerationRandomTag TagGenerator =  new GenerationRandomTag();
-    public UserRequestDto register(UserRequestDto userRQ) {
+    public UserResponseDto register(UserRequestDto userRQ) {
         UserEntity userET = new UserEntity();
         Optional<UserEntity> userV = iUserRepository.findByEmail(userRQ.getEmail());
+        UserResponseDto userResponse = new UserResponseDto();
 
         if (userV.isPresent()) {
             throw new Exceptions.AlreadyExist("User already exist");
@@ -44,9 +46,16 @@ public class UserService {
 
             RolesEntity role = iRolesRepository.findByName("ROLE_PERSONAL");
             String tag = TagGenerator.generateTag();
+            userResponse.setEmail(userRQ.getEmail());
+            userResponse.setPassword(passwordEncoder.encode(userRQ.getPassword()));
+            userResponse.setName(userRQ.getName());
+            userResponse.setPersonal(userRQ.isPersonal());
+            userResponse.setSharableTag(tag);
+
 
             
             userET.setEmail(userRQ.getEmail());
+
 
             userET.setPassword(passwordEncoder.encode(userRQ.getPassword()));
 
@@ -57,7 +66,8 @@ public class UserService {
 
 
             iUserRepository.save(userET);
-            return userRQ;
+
+            return userResponse;
 
 
 
@@ -68,6 +78,11 @@ public class UserService {
         else {
             String tag = TagGenerator.generateTag();
             RolesEntity role = iRolesRepository.findByName("ROLE_ALUNO");
+            userResponse.setEmail(userRQ.getEmail());
+            userResponse.setPassword(passwordEncoder.encode(userRQ.getPassword()));
+            userResponse.setName(userRQ.getName());
+            userResponse.setPersonal(userRQ.isPersonal());
+            userResponse.setSharableTag(tag);
 
             userET.setEmail(userRQ.getEmail());
             userET.setPassword(passwordEncoder.encode(userRQ.getPassword()));
@@ -78,7 +93,7 @@ public class UserService {
             iUserRepository.save(userET);
 
 
-            return userRQ;
+            return userResponse;
         }
 
 
