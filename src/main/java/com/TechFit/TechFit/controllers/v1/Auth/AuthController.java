@@ -2,6 +2,7 @@ package com.TechFit.TechFit.controllers.v1.Auth;
 
 import com.TechFit.TechFit.dto.TokenResponseDto;
 import com.TechFit.TechFit.dto.UserRequestDto;
+import com.TechFit.TechFit.dto.UserResponseDto;
 import com.TechFit.TechFit.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final UserService userService;
     @PostMapping("/register")
-    public UserRequestDto Register(@Valid @RequestBody UserRequestDto userRequestDto){
+    public UserResponseDto  Register(@Valid @RequestBody UserRequestDto userRequestDto){
         return userService.register(userRequestDto);
     }
     @PostMapping("/login")
