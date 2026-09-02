@@ -1,12 +1,15 @@
 package com.TechFit.TechFit.controllers.v1.Personal;
 
 import com.TechFit.TechFit.database.repository.IUserRepository;
+import com.TechFit.TechFit.dto.AlunoResponseDto;
 import com.TechFit.TechFit.dto.UserRequestDto;
 import com.TechFit.TechFit.service.PersonalService;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/personal")
@@ -17,6 +20,17 @@ public class PersonalController {
     public ResponseEntity<?> addAluno(@RequestParam String Sharable, @RequestBody UserRequestDto userPL) throws BadRequestException {
         PersonalService.AddAluno(Sharable,userPL);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/alunos/{SharableTag}")
+    public ResponseEntity<?> getAlunos(@PathVariable String SharableTag) throws BadRequestException {
+
+        List<AlunoResponseDto> alunos = PersonalService.GetAlunos(SharableTag);
+
+
+
+        return ResponseEntity.ok().body(alunos);
+
+
     }
 
 }
