@@ -1,8 +1,8 @@
-package com.TechFit.TechFit.controllers.v1.Auth;
+package com.TechFit.TechFit.controllers.v1.User.Auth;
 
-import com.TechFit.TechFit.dto.TokenResponseDto;
-import com.TechFit.TechFit.dto.UserRequestDto;
-import com.TechFit.TechFit.dto.UserResponseDto;
+import com.TechFit.TechFit.dto.User.TokenResponseDto;
+import com.TechFit.TechFit.dto.User.UserRequestDto;
+import com.TechFit.TechFit.dto.User.UserResponseDto;
 import com.TechFit.TechFit.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

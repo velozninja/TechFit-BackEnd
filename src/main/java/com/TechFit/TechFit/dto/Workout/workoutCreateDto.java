@@ -1,5 +1,6 @@
-package com.TechFit.TechFit.dto;
+package com.TechFit.TechFit.dto.Workout;
 
+import com.TechFit.TechFit.dto.Exercise.exerciseDto;
 import lombok.*;
 
 import java.util.List;

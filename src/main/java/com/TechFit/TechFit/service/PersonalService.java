@@ -4,9 +4,9 @@ import com.TechFit.TechFit.database.model.UserEntity;
 import com.TechFit.TechFit.database.model.workout.WorkoutEntity;
 import com.TechFit.TechFit.database.repository.IUserRepository;
 import com.TechFit.TechFit.database.repository.IWorkoutRepository;
-import com.TechFit.TechFit.dto.AlunoResponseDto;
-import com.TechFit.TechFit.dto.UserRequestDto;
-import com.TechFit.TechFit.dto.WorkoutDTO;
+import com.TechFit.TechFit.dto.aluno.AlunoResponseDto;
+import com.TechFit.TechFit.dto.User.UserRequestDto;
+import com.TechFit.TechFit.dto.Workout.WorkoutDTO;
 import com.TechFit.TechFit.exeptions.Exceptions;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -42,7 +42,7 @@ public class PersonalService {
 
         return SharableTag;
     }
-    @Cacheable(value = "alunos", key = "#SharableTag")
+    @Cacheable(value = "personal", key = "#SharableTag")
     public List<AlunoResponseDto> GetAlunos(String SharableTag) throws BadRequestException {
         List<UserEntity> alunos = UserRepository.findByPersonal_sharableTag(SharableTag);
         if (alunos.isEmpty()) {

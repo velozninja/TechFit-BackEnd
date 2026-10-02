@@ -5,22 +5,23 @@ import com.TechFit.TechFit.database.model.RolesEntity;
 import com.TechFit.TechFit.database.model.UserEntity;
 import com.TechFit.TechFit.database.repository.IRolesRepository;
 import com.TechFit.TechFit.database.repository.IUserRepository;
-import com.TechFit.TechFit.dto.TokenResponseDto;
-import com.TechFit.TechFit.dto.UserRequestDto;
-import com.TechFit.TechFit.dto.UserResponseDto;
+import com.TechFit.TechFit.dto.User.TokenResponseDto;
+import com.TechFit.TechFit.dto.User.UserRequestDto;
+import com.TechFit.TechFit.dto.User.UserResponseDto;
 import com.TechFit.TechFit.exeptions.Exceptions;
 import com.TechFit.TechFit.utils.GenerationRandomTag;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -143,6 +144,14 @@ public class UserService {
             throw e;
         }
 
+
+    }
+    public String setProfileImage(MultipartFile profileImage, String email) throws IOException {
+        UserEntity user = iUserRepository.findByEmail(email).orElseThrow(() -> new Exceptions.NotFound("User not found"));
+        user.setProfileImage(profileImage.getBytes());
+        iUserRepository.save(user);
+
+        return "Profile Image updated";
 
     }
 
