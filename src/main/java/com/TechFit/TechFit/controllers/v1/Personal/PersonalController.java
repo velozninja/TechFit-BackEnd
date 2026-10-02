@@ -1,8 +1,7 @@
 package com.TechFit.TechFit.controllers.v1.Personal;
 
-import com.TechFit.TechFit.database.repository.IUserRepository;
-import com.TechFit.TechFit.dto.AlunoResponseDto;
-import com.TechFit.TechFit.dto.UserRequestDto;
+import com.TechFit.TechFit.dto.aluno.AlunoResponseDto;
+import com.TechFit.TechFit.dto.User.UserRequestDto;
 import com.TechFit.TechFit.service.PersonalService;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;

@@ -1,8 +1,9 @@
-package com.TechFit.TechFit.dto;
+package com.TechFit.TechFit.dto.aluno;
 
 
 
 import com.TechFit.TechFit.database.model.UserEntity;
+import com.TechFit.TechFit.dto.Workout.WorkoutDTO;
 import lombok.*;
 
 @Getter

@@ -1,9 +1,6 @@
-package com.TechFit.TechFit.dto;
+package com.TechFit.TechFit.dto.Exercise;
 
-import jakarta.persistence.Embeddable;
 import lombok.*;
-
-import java.time.Duration;
 
 
 @AllArgsConstructor

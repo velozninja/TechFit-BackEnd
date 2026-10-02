@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 public class CacheConfig {
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("alunos");
+        return new ConcurrentMapCacheManager("alunos","personal");
+
     }
 }

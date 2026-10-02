@@ -1,4 +1,4 @@
-package com.TechFit.TechFit.dto;
+package com.TechFit.TechFit.dto.Workout;
 
 import com.TechFit.TechFit.database.model.workout.ExerciseEntity;
 import lombok.*;

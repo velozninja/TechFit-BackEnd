@@ -39,9 +39,13 @@ public class SecurityConfiguration {
                                 })
                 )
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/v1/auth/**").permitAll()
-                        .requestMatchers("/v1/ExerciseEntity/**").hasRole("PERSONAL")
+                        .requestMatchers("/v1/aluno/**").hasRole("ALUNO")
                         .requestMatchers("/v1/personal/**").hasRole("PERSONAL")
                         .requestMatchers("/v1/workout/**").hasRole("PERSONAL")
+                        .requestMatchers("/v1/User/**").permitAll()
+
+
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

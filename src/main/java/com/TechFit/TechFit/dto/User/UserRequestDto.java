@@ -1,4 +1,4 @@
-package com.TechFit.TechFit.dto;
+package com.TechFit.TechFit.dto.User;
 
 import lombok.*;
 
@@ -7,12 +7,14 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserResponseDto {
+public class UserRequestDto {
     public String name;
     public String email;
     public String password;
-    public String SharableTag;
     public boolean personal;
+
+
+
 
 
 }

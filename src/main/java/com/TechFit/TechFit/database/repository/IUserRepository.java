@@ -2,6 +2,7 @@ package com.TechFit.TechFit.database.repository;
 
 import com.TechFit.TechFit.database.model.RolesEntity;
 import com.TechFit.TechFit.database.model.UserEntity;
+import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
@@ -15,4 +16,5 @@ public interface IUserRepository extends JpaRepository<UserEntity, UUID> {
     Optional<UserEntity> findByRolesAndEmail(RolesEntity role, String email);
     Optional<UserEntity> findBysharableTag(String tag);
     List<UserEntity> findByPersonal_sharableTag(String tag);
+    UserEntity findByStudents_sharableTag(String tag);
 }
