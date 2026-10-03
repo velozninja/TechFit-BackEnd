@@ -1,6 +1,7 @@
 package com.TechFit.TechFit.config;
 
 import lombok.AllArgsConstructor;
+import org.apache.catalina.util.RateLimiter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @AllArgsConstructor
 public class SecurityConfiguration {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final RateLimitFilter rateLimitFilter;
 
     @Bean
     public SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
@@ -49,6 +51,8 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(   rateLimitFilter,
+                        JwtAuthenticationFilter.class)
                 .build(
 
                 );
