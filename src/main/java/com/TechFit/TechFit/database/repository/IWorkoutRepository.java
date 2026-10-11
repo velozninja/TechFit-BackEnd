@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IWorkoutRepository extends JpaRepository<WorkoutEntity, Integer> {
-    Optional<WorkoutEntity> findByNameAndAluno(String name, UserEntity Aluno);
+    WorkoutEntity findByNameAndAluno(String name, UserEntity Aluno);
     Optional<WorkoutEntity> findById(Integer id);
     Optional<WorkoutEntity> findByName(String name);
     Optional<WorkoutEntity> findByAluno(UserEntity Aluno);

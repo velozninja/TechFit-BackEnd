@@ -10,6 +10,7 @@ import com.TechFit.TechFit.database.repository.IWorkoutRepository;
 import com.TechFit.TechFit.dto.Exercise.exerciseDto;
 import com.TechFit.TechFit.dto.Workout.WorkoutDTO;
 import com.TechFit.TechFit.dto.Workout.workoutCreateDto;
+import com.TechFit.TechFit.dto.Workout.workoutEditDto;
 import com.TechFit.TechFit.exeptions.Exceptions;
 import com.TechFit.TechFit.utils.DurationUtils;
 import com.TechFit.TechFit.utils.GenerationRandomTag;
@@ -21,6 +22,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static java.lang.String.valueOf;
 
 @Service
 @AllArgsConstructor
@@ -40,11 +43,8 @@ public class WorkoutService {
         if (Aluno.get().getPersonal().getId() != Personal.get().getId()) {
             throw new Exceptions.BadRequest("Not is your aluno");
         }
-        Optional<WorkoutEntity> wk = workoutRepository.findByNameAndAluno(workoutCreateDto.getName(), Aluno.get());
 
-        if (!wk.isEmpty()) {
-            throw new Exceptions.BadRequest("Workout already exists");
-        }
+
 
 
         WorkoutEntity workout = new WorkoutEntity();
@@ -57,8 +57,8 @@ public class WorkoutService {
         workout.setNotes(workoutCreateDto.getNotes());
         workoutDTO.setNotes(workoutCreateDto.getNotes());
 
-        workout.setWeekDays(WorkoutDayWeek.valueOf(String.valueOf(workoutCreateDto.getDayWeek())));
-        workoutDTO.setWeekDays(String.valueOf(workoutCreateDto.getDayWeek()));
+        workout.setWeekDays(WorkoutDayWeek.valueOf(valueOf(workoutCreateDto.getDayWeek())));
+        workoutDTO.setWeekDays(valueOf(workoutCreateDto.getDayWeek()));
 
         workout.setAluno(Aluno.get());
 
@@ -95,47 +95,44 @@ public class WorkoutService {
         return workoutDTO;
     }
 
-    public WorkoutDTO EditWorkout(workoutCreateDto workoutCreateDto, String Origin_name) throws Exceptions {
+    public WorkoutDTO EditWorkout(workoutEditDto workoutEditDto) throws Exceptions {
 
-        Optional<UserEntity> Aluno = Optional.ofNullable(userRepository.findByEmail(workoutCreateDto.getSharableTagUser())
+        Optional<UserEntity> Aluno = Optional.ofNullable(userRepository.findBysharableTag(workoutEditDto.getSharableTagUser())
                 .orElseThrow(() -> new Exceptions.NotFound("User not found")));
 
 
-        Optional<UserEntity> Personal = Optional.ofNullable(userRepository.findByEmail(workoutCreateDto.getSharableTagPersonal()))
+        Optional<UserEntity> Personal = Optional.ofNullable(userRepository.findBysharableTag(workoutEditDto.getSharableTagPersonal()))
                 .orElseThrow(() -> new Exceptions.NotFound("User not found"));
 
         if (Aluno.get().getPersonal().getId() != Personal.get().getId()) {
             throw new Exceptions.BadRequest("Not is your aluno");
         }
 
-        Optional<WorkoutEntity> wk = workoutRepository.findByNameAndAluno(workoutCreateDto.getName(), Aluno.get());
-        if (!wk.isEmpty()) {
-            throw new Exceptions.BadRequest("Workout already exists");
-        }
+        Optional<WorkoutEntity> wk = Optional.ofNullable(workoutRepository.findByTAG(workoutEditDto.getWorkoutTag())
+                .orElseThrow(() -> new Exceptions.NotFound("Workout not found")));
+        workoutRepository.delete(wk.get());
 
 
-        wk = workoutRepository.findByNameAndAluno(Origin_name, Aluno.get());
 
-        if (wk.isEmpty()) {
-            throw new Exceptions.BadRequest("Workout Not exists");
-        }
+
+
 
 
         WorkoutDTO workoutDTO = new WorkoutDTO();
         WorkoutEntity workout = new WorkoutEntity();
 
-        workout.setName(workoutCreateDto.getName());
-        workoutDTO.setName(workoutCreateDto.getName());
-        workout.setNotes(workoutCreateDto.getNotes());
-        workoutDTO.setNotes(workoutCreateDto.getNotes());
-        workout.setWeekDays(WorkoutDayWeek.valueOf(String.valueOf(workoutCreateDto.getDayWeek())));
-        workoutDTO.setWeekDays(String.valueOf(workoutCreateDto.getDayWeek()));
+        workout.setName(workoutEditDto.getName());
+        workoutDTO.setName(workoutEditDto.getName());
+        workout.setNotes(workoutEditDto.getNotes());
+        workoutDTO.setNotes(workoutEditDto.getNotes());
+        workout.setWeekDays(WorkoutDayWeek.valueOf(String.valueOf(workoutEditDto.getDayWeek())));
+        workoutDTO.setWeekDays(String.valueOf(String.valueOf(workoutEditDto.getDayWeek())));
         workout.setAluno(Aluno.get());
         workout.setPersonal(Personal.get());
 
         List<ExerciseEntity> exercises = new ArrayList<>();
 
-        for (exerciseDto exercise : workoutCreateDto.getExercises()) {
+        for (exerciseDto exercise : workoutEditDto.getExercises()) {
             String RestString = exercise.getRestTime();
             Duration Rest = DurationUtils.ParseMmSs(RestString);
             String TargeString = exercise.getTargetTime();
@@ -160,23 +157,23 @@ public class WorkoutService {
 
     }
 
-    public void DeleteWorkout(workoutCreateDto workoutCreateDto) throws Exceptions {
-        Optional<UserEntity> Aluno = Optional.ofNullable(userRepository.findByEmail(workoutCreateDto.getSharableTagUser())
+    public void DeleteWorkout(workoutEditDto workoutEditDto) throws Exceptions {
+        Optional<UserEntity> Aluno = Optional.ofNullable(userRepository.findByEmail(workoutEditDto.getSharableTagUser())
                 .orElseThrow(() -> new Exceptions.NotFound("User not found")));
 
-        Optional<UserEntity> Personal = Optional.ofNullable(userRepository.findByEmail(workoutCreateDto.getSharableTagPersonal())
+        Optional<UserEntity> Personal = Optional.ofNullable(userRepository.findByEmail(workoutEditDto.getSharableTagPersonal())
                 .orElseThrow(() -> new Exceptions.NotFound("User not found")));
 
         if (Aluno.get().getPersonal().getId() != Personal.get().getId()) {
             throw new Exceptions.BadRequest("Not is your aluno");
         }
-        Optional<WorkoutEntity> wk = Optional.ofNullable(workoutRepository.findByNameAndAluno(workoutCreateDto.getName(), Aluno.get())
-                .orElseThrow(() -> new Exceptions.NotFound("Workout not found")));
+        Optional<WorkoutEntity> wk = Optional.ofNullable(workoutRepository.findByTAG(workoutEditDto.getWorkoutTag())
+                .orElseThrow(() -> new Exceptions.NotFound("not found workout")));
 
-        Optional<WorkoutEntity> wk2 = Optional.ofNullable(workoutRepository.findById(wk.get().getId()))
-                .orElseThrow(() -> new Exceptions.NotFound("Workout not found"));
 
-        workoutRepository.delete(wk2.get());
+
+
+        workoutRepository.delete(wk.get());
 
     }
     public void startWorkout(String WorkoutSharableTag) throws Exceptions {

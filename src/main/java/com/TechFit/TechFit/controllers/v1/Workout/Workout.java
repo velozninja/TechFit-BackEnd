@@ -1,6 +1,7 @@
 package com.TechFit.TechFit.controllers.v1.Workout;
 
 import com.TechFit.TechFit.dto.Workout.workoutCreateDto;
+import com.TechFit.TechFit.dto.Workout.workoutEditDto;
 import com.TechFit.TechFit.service.WorkoutService;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -17,14 +18,14 @@ public class Workout {
         workoutService.createWorkout(workout);
         return ResponseEntity.ok().body(workout);
     }
-    @PatchMapping("/{OriginName}")
-    public ResponseEntity<workoutCreateDto>  editWorkout(@RequestBody workoutCreateDto workout, @PathVariable String OriginName) throws BadRequestException {
-        workoutService.EditWorkout(workout, OriginName);
+    @PatchMapping("/Edit")
+    public ResponseEntity<workoutEditDto>  editWorkout(@RequestBody workoutEditDto workout) throws BadRequestException {
+        workoutService.EditWorkout(workout);
         return ResponseEntity.ok().body(workout);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity deleteWorkout(@RequestBody workoutCreateDto workout) throws BadRequestException {
+    public ResponseEntity deleteWorkout(@RequestBody workoutEditDto workout) throws BadRequestException {
         workoutService.DeleteWorkout(workout);
         return ResponseEntity.noContent().build();
     }
