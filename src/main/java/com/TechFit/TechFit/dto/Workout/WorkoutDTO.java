@@ -17,5 +17,6 @@ public class WorkoutDTO {
     private String WeekDays;
     private String notes;
     private List<ExerciseEntity> ExerciseEntities;
+    private String tag;
 
 }

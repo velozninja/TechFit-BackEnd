@@ -18,5 +18,6 @@ public class ExerciseEntity {
     private Duration targetTime;
     private Duration restTime;
     private String notes;
+    private Boolean Finished;
 
 }

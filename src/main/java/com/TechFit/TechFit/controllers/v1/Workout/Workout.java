@@ -28,5 +28,16 @@ public class Workout {
         workoutService.DeleteWorkout(workout);
         return ResponseEntity.noContent().build();
     }
+    @PatchMapping("/start/{workoutSharableTag}")
+    public  ResponseEntity<Void> startWorkout(@PathVariable String WorkoutSharableTag) throws BadRequestException {
+        workoutService.startWorkout(WorkoutSharableTag);
+        return ResponseEntity.noContent().build();
+    }
+    @PatchMapping("/finish/{workoutSharableTag}")
+    public  ResponseEntity<Void> finishWorkout(@PathVariable String WorkoutSharableTag) throws BadRequestException {
+        workoutService.finishWorkout(WorkoutSharableTag);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

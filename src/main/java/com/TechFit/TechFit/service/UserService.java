@@ -32,9 +32,10 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final TokenProvider tokenProvider;
+    private final GenerationRandomTag TagGenerator = new GenerationRandomTag();
     @Value(value = "${jwt.expiration}")
     private long TokenExpirationTime;
-    private final GenerationRandomTag TagGenerator =  new GenerationRandomTag();
+
     public UserResponseDto register(UserRequestDto userRQ) {
         UserEntity userET = new UserEntity();
         Optional<UserEntity> userV = iUserRepository.findByEmail(userRQ.getEmail());
@@ -43,7 +44,7 @@ public class UserService {
         if (userV.isPresent()) {
             throw new Exceptions.AlreadyExist("User already exist");
         }
-        if(userRQ.isPersonal()) {
+        if (userRQ.isPersonal()) {
 
             RolesEntity role = iRolesRepository.findByName("ROLE_PERSONAL");
             String tag = TagGenerator.generateTag();
@@ -54,7 +55,6 @@ public class UserService {
             userResponse.setSharableTag(tag);
 
 
-            
             userET.setEmail(userRQ.getEmail());
 
 
@@ -71,12 +71,7 @@ public class UserService {
             return userResponse;
 
 
-
-
-
-
-        }
-        else {
+        } else {
             String tag = TagGenerator.generateTag();
             RolesEntity role = iRolesRepository.findByName("ROLE_ALUNO");
             userResponse.setEmail(userRQ.getEmail());
@@ -98,7 +93,6 @@ public class UserService {
         }
 
 
-
     }
 
     public TokenResponseDto login(UserRequestDto userRQ) throws BadRequestException {
@@ -106,21 +100,20 @@ public class UserService {
 
 
         try {
-            if(userRQ.isPersonal()) {
+            if (userRQ.isPersonal()) {
                 System.out.println(userRQ);
 
-              String role_name = "ROLE_PERSONAL";
-              RolesEntity role = iRolesRepository.findByName(role_name);
+                String role_name = "ROLE_PERSONAL";
+                RolesEntity role = iRolesRepository.findByName(role_name);
 
-              iUserRepository.findByRolesAndEmail(role, userRQ.getEmail())
+                iUserRepository.findByRolesAndEmail(role, userRQ.getEmail())
 
-                      .orElseThrow(() -> new Exceptions.NotFound("User not found"));
+                        .orElseThrow(() -> new Exceptions.NotFound("User not found"));
 
                 System.out.println(userRQ);
 
 
-            }
-            else{
+            } else {
                 String role_name = "ROLE_ALUNO";
                 RolesEntity role = iRolesRepository.findByName(role_name);
 
@@ -130,22 +123,20 @@ public class UserService {
                 System.out.println(userRQ.getEmail());
             }
 
-             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userRQ.getEmail(), userRQ.getPassword()));
-             String token = tokenProvider.gerarToken(authentication);
-             return new TokenResponseDto(token, TokenExpirationTime);
-
-
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userRQ.getEmail(), userRQ.getPassword()));
+            String token = tokenProvider.gerarToken(authentication);
+            return new TokenResponseDto(token, TokenExpirationTime);
 
 
         } catch (BadCredentialsException e) {
-            throw new  BadRequestException("Invalid credentials");
-        }
-        catch (Exception e) {
+            throw new BadRequestException("Invalid credentials");
+        } catch (Exception e) {
             throw e;
         }
 
 
     }
+
     public String setProfileImage(MultipartFile profileImage, String email) throws IOException {
         UserEntity user = iUserRepository.findByEmail(email).orElseThrow(() -> new Exceptions.NotFound("User not found"));
         user.setProfileImage(profileImage.getBytes());

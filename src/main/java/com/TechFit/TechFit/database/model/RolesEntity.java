@@ -5,8 +5,6 @@ import lombok.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.io.Serializable;
-
 @Entity
 @Getter
 @Setter

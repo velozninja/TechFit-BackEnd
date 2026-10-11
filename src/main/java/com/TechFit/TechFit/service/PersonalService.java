@@ -4,9 +4,9 @@ import com.TechFit.TechFit.database.model.UserEntity;
 import com.TechFit.TechFit.database.model.workout.WorkoutEntity;
 import com.TechFit.TechFit.database.repository.IUserRepository;
 import com.TechFit.TechFit.database.repository.IWorkoutRepository;
-import com.TechFit.TechFit.dto.aluno.AlunoResponseDto;
 import com.TechFit.TechFit.dto.User.UserRequestDto;
 import com.TechFit.TechFit.dto.Workout.WorkoutDTO;
+import com.TechFit.TechFit.dto.aluno.AlunoResponseDto;
 import com.TechFit.TechFit.exeptions.Exceptions;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -22,11 +22,12 @@ import java.util.Optional;
 public class PersonalService {
     private final IUserRepository UserRepository;
     private final IWorkoutRepository WorkoutRepository;
+
     public String AddAluno(String SharableTag, UserRequestDto userPL) throws BadRequestException {
         UserEntity userQuery = UserRepository.findBysharableTag(SharableTag)
                 .orElseThrow(() -> new Exceptions.NotFound("Student not found"));
         UserEntity Personal = UserRepository.findByEmail(userPL.getEmail())
-                        .orElseThrow(() -> new Exceptions.NotFound("User not found"));
+                .orElseThrow(() -> new Exceptions.NotFound("User not found"));
         userQuery.setPersonal(Personal);
 
         UserRepository.save(userQuery);
@@ -38,10 +39,9 @@ public class PersonalService {
         System.out.println("salvou aluno");
 
 
-
-
         return SharableTag;
     }
+
     @Cacheable(value = "personal", key = "#SharableTag")
     public List<AlunoResponseDto> GetAlunos(String SharableTag) throws BadRequestException {
         List<UserEntity> alunos = UserRepository.findByPersonal_sharableTag(SharableTag);
@@ -54,20 +54,19 @@ public class PersonalService {
             WorkoutDTO workoutDTO = new WorkoutDTO();
             if (!workout.isPresent()) {
 
-                AlunoResponseDto Aluno =  new AlunoResponseDto();
+                AlunoResponseDto Aluno = new AlunoResponseDto();
                 Aluno.setName(user.getUsername());
                 Aluno.setSharableTag(user.getSharableTag());
                 Aluno.setWorkout(null);
 
                 alunosResponse.add(Aluno);
-            }
-            else {
+            } else {
 
                 workoutDTO.setExerciseEntities(workout.get().getExerciseEntities());
                 workoutDTO.setNotes(workout.get().getNotes());
                 workoutDTO.setName(workout.get().getName());
-                workoutDTO.setWeekDays(workout.get().getWeekDays());
-                AlunoResponseDto Aluno =  new AlunoResponseDto();
+                workoutDTO.setWeekDays(String.valueOf(workout.get().getWeekDays()));
+                AlunoResponseDto Aluno = new AlunoResponseDto();
                 Aluno.setName(user.getUsername());
                 Aluno.setSharableTag(user.getSharableTag());
                 Aluno.setWorkout(null);
@@ -76,17 +75,8 @@ public class PersonalService {
             }
 
 
-
         }
         return alunosResponse;
-
-
-
-
-
-
-
-
 
 
     }

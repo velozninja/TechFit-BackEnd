@@ -3,8 +3,10 @@ package com.TechFit.TechFit.database.repository;
 
 import com.TechFit.TechFit.database.model.UserEntity;
 import com.TechFit.TechFit.database.model.workout.WorkoutEntity;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IWorkoutRepository extends JpaRepository<WorkoutEntity, Integer> {
@@ -14,4 +16,8 @@ public interface IWorkoutRepository extends JpaRepository<WorkoutEntity, Integer
     Optional<WorkoutEntity> findByAluno(UserEntity Aluno);
     void delete(WorkoutEntity workoutEntity);
 
+    Optional<WorkoutEntity> findByTAG(String TAG);
+
+    List<WorkoutEntity> findAllByTAGIsNull();
+    List<WorkoutEntity> findAllByStatusIsNull();
 }

@@ -2,7 +2,6 @@ package com.TechFit.TechFit.database.repository;
 
 import com.TechFit.TechFit.database.model.RolesEntity;
 import com.TechFit.TechFit.database.model.UserEntity;
-import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
